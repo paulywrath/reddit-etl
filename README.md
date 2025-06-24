@@ -1,0 +1,1 @@
+A lightweight ETL pipeline that fetches posts from r/marcmaron, stores post data in PostgreSQL, transforms the data, and exposes results.
