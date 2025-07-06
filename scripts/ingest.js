@@ -17,13 +17,12 @@ async function ingest() {
 
     for (const post of posts) {
       await client.query(
-        `INSERT INTO posts(id, title, author, created_utc, raw_json)
-         VALUES($1,$2,$3,to_timestamp($4),$5)
-         ON CONFLICT (id) DO NOTHING`,
-        [post.id, post.title, post.author, post.created_utc, post]
+        `INSERT INTO posts(id, title, author, created_utc, selftext, raw_json)
+        VALUES($1,$2,$3,to_timestamp($4),$5,$6)
+        ON CONFLICT (id) DO NOTHING`,
+        [post.id, post.title, post.author, post.created_utc, post.selftext || null, post]
       );
 
-      // 2) Tokenize title
       const words = post.title.match(/\w+/g)?.map(w => w.toLowerCase()) || [];
       for (const w of words) {
         await client.query(
